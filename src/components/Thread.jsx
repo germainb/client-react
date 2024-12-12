@@ -1,19 +1,24 @@
 import React from "react";
-import { Avatar, Button, message } from "antd";
-import { AiFillLike, AiFillDislike } from "react-icons/ai";
+import { Avatar, Button, message, Modal } from "antd";
+import { AiFillLike, AiFillDislike, AiFillDelete } from "react-icons/ai";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { updateThread } from "../redux/threadSlice";
-import { dislikeThread, likeThread } from "../services/authService";
+import { removeThread, updateThread } from "../redux/threadSlice";
+import { deleteThread, dislikeThread, likeThread } from "../services/authService";
 
 const ThreadWrapper = styled.div`
+  position: relative; /* Ensures the delete icon can be positioned absolutely */
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const ThreadHeader = styled.div`
@@ -37,8 +42,9 @@ const ThreadContent = styled.p`
 const Actions = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-top: 16px;
+  justify-content: space-between;
+  margin-top: auto; /* Ensures buttons are at the bottom */
+  width: 100%;
 `;
 
 const ActionButton = styled(Button)`
@@ -46,7 +52,8 @@ const ActionButton = styled(Button)`
   align-items: center;
   gap: 8px;
   margin-left: 8px;
-  color: ${(props) => (props.like ? "green" : props.dislike ? "red" : "#000")};  // Conditionally set color
+  color: ${(props) => (props.like ? "green" : props.dislike ? "red" : "#000")};
+  flex-grow: 1; /* Ensure buttons grow equally */
   &:hover {
     color: ${(props) => (props.like ? "darkgreen" : props.dislike ? "darkred" : "#000")};
   }
@@ -57,8 +64,22 @@ const Count = styled.span`
   color: ${(props) => (props.like ? "green" : props.dislike ? "red" : "#555")};
 `;
 
+const DeleteButton = styled(Button)`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: red;
+  &:hover {
+    color: darkred;
+  }
+`;
+
+
 const Thread = ({ thread }) => {
   const { user } = useSelector((state) => state.user);
+  console.log(`user : ${JSON.stringify(user)}`);
   const { _id, title, content, author, likes, dislikes } = thread;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -85,8 +106,39 @@ const Thread = ({ thread }) => {
     }
   };
 
+  const handleDelete = async () => {
+    // Show confirmation dialog using Ant Design's Modal.confirm
+    Modal.confirm({
+      title: "Are you sure you want to delete this thread?",
+      content: "This action cannot be undone.",
+      onOk: async () => {
+        try {
+          // Perform the delete thread API call using the deleteThread function from authService
+          await deleteThread(_id);
+          // Show success message
+          message.success("Thread deleted successfully!");
+          // Dispatch to remove the thread from Redux state
+          dispatch(removeThread(_id));
+          navigate("/"); // Navigates to the home page
+        } catch (error) {
+          // Handle errors by showing an error message
+          message.error(error.message);
+          console.error("Error deleting the thread:", error.message);
+        }
+      },
+      onCancel() {
+        console.log("Thread deletion cancelled");
+      },
+    });
+  };
+
   return (
     <ThreadWrapper>
+      {user && user._id === author._id && (
+        <DeleteButton onClick={handleDelete}>
+          <AiFillDelete size={20} />
+        </DeleteButton>
+      )}
       <ThreadHeader>
         <Avatar src={author.avatar} alt={author.name} size={48} />
         <div style={{ marginLeft: 12 }}>

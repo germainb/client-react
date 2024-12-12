@@ -70,4 +70,24 @@ export const likeThread = async (threadId) => {
     }
   };
 
-export { register, login, getProfile, getThreads };
+  // Create a new thread
+ const createThread = async (threadData) => {
+  try {
+    const response = await axiosInstance.post("api/threads", threadData);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Error creating thread");
+  }
+};
+
+// Delete a thread
+const deleteThread = async (threadId) => {
+  try {
+    const response = await axiosInstance.delete(`api/threads/${threadId}`);
+    return response.data; // Return the response data (optional, based on what your backend sends)
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Error deleting thread");
+  }
+};
+
+export { register, login, getProfile, getThreads, createThread, deleteThread };

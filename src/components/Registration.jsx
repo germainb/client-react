@@ -73,7 +73,7 @@ const Registration = () => {
 
   const handleRegister = async (values, { setSubmitting, setErrors }) => {
     const formData = new FormData();
-    formData.append("name", values.username);
+    formData.append("name", values.name);
     formData.append("email", values.email);
     formData.append("password", values.password);
     if (avatarFile) formData.append("avatar", avatarFile);

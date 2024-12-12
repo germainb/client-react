@@ -1,6 +1,7 @@
 import React from "react";
 import { Layout, Avatar, Dropdown, Menu } from "antd";
-import { LoginOutlined, UserAddOutlined, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
+import { LoginOutlined, UserAddOutlined, LogoutOutlined, MenuOutlined, PlusOutlined } from "@ant-design/icons";
+
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/userSlice";
@@ -66,6 +67,11 @@ const LayoutComponent = ({ children }) => {
     navigate("/");
   };
 
+  const goToCreateThread = () => {
+    navigate("/create-thread");
+  };
+
+
   // Dropdown menu items for authenticated and unauthenticated users
   const menuItems = (
     <Menu>
@@ -83,6 +89,11 @@ const LayoutComponent = ({ children }) => {
           <Menu.Item key="profile" icon={<Avatar src={user.avatar} />} disabled>
             {user.name}
           </Menu.Item>
+
+          <Menu.Item key="create" icon={<PlusOutlined />} onClick={goToCreateThread}>
+            Create
+          </Menu.Item>
+
           <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
             Logout
           </Menu.Item>
@@ -98,7 +109,7 @@ const LayoutComponent = ({ children }) => {
           <ReactLogo />
           Thread
         </LogoContainer>
-        <Dropdown overlay={menuItems} placement="bottomRight">
+        <Dropdown overlay={menuItems}  placement="bottomRight">
           <StyledMenuIcon />
         </Dropdown>
       </StyledHeader>

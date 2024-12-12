@@ -1,15 +1,14 @@
-// src/components/Login.js
 import React from "react";
 import { Button, Input, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser, setLoading, setError } from "../redux/userSlice";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { login } from "../services/authService";
+import { createThread } from "../services/authService";
+import { setError, setLoading } from "../redux/threadSlice";
 
-const LoginContainer = styled.div`
+const CreateThreadContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,44 +30,35 @@ const ErrorText = styled.div`
   margin-bottom: 8px;
 `;
 
-const LoginTitle = styled.div`
+const CreateThreadTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const Login = () => {
+const CreateThread = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading } = useSelector((state) => state.user);
+  const { loading } = useSelector((state) => state.threads);
 
-  const loginSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    password: Yup.string().required("Password is required"),
+  const threadSchema = Yup.object().shape({
+    title: Yup.string()
+      .required("Title is required")
+      .min(5, "Title must be at least 5 characters long"),
+    content: Yup.string()
+      .required("Content is required")
+      .min(10, "Content must be at least 10 characters long"),
   });
 
-  const handleLogin = async (values, { setSubmitting, setErrors }) => {
+  const handleCreateThread = async (values, { setSubmitting, setErrors }) => {
     dispatch(setError(null));
     dispatch(setLoading(true));
     try {
-      console.log(`values ${JSON.stringify(values)}`);
-      const response = await login(values);
-      console.log(`Response login ${JSON.stringify(response.data)}`);
-      dispatch(
-        setUser({
-          user: {
-            _id: response._id,
-            email: response.email,
-            name: response.name,
-            avatar: response.avatar,
-          },
-          token: response.token,
-        })
-      );
-      message.success("Login successful!");
-      navigate("/");
+      await createThread(values);
+      message.success("Thread created successfully!");
+      navigate("/"); // Redirect to homepage
     } catch (err) {
-      const errorMessage = err.response?.data?.message || "Failed to login!";
+      const errorMessage = err.response?.data?.message || "Failed to create thread!";
       dispatch(setError(errorMessage));
       message.error(errorMessage);
       setErrors({ general: errorMessage });
@@ -79,44 +69,43 @@ const Login = () => {
   };
 
   return (
-    <LoginContainer>
+    <CreateThreadContainer>
       <FormWrapper>
-        <LoginTitle>
-          <h2>Login</h2>
-        </LoginTitle>
+        <CreateThreadTitle>
+          <h2>Create Thread</h2>
+        </CreateThreadTitle>
         <Formik
-          initialValues={{ email: "", password: "" }}
-          validationSchema={loginSchema}
-          onSubmit={handleLogin}
+          initialValues={{ title: "", content: "" }}
+          validationSchema={threadSchema}
+          onSubmit={handleCreateThread}
         >
           {({ errors, touched, isSubmitting }) => (
             <Form>
               {errors.general && <ErrorText>{errors.general}</ErrorText>}
 
               <div>
-                <label htmlFor="email">Email</label>
+                <label htmlFor="title">Title</label>
                 <Field
                   as={Input}
-                  name="email"
-                  type="email"
+                  name="title"
                   size="large"
-                  placeholder="Enter your email"
+                  placeholder="Enter thread title"
                 />
-                {touched.email && errors.email && (
-                  <ErrorText>{errors.email}</ErrorText>
+                {touched.title && errors.title && (
+                  <ErrorText>{errors.title}</ErrorText>
                 )}
               </div>
 
               <div style={{ marginTop: "16px" }}>
-                <label htmlFor="password">Password</label>
+                <label htmlFor="content">Content</label>
                 <Field
-                  as={Input.Password}
-                  name="password"
-                  size="large"
-                  placeholder="Enter your password"
+                  as={Input.TextArea}
+                  name="content"
+                  rows={4}
+                  placeholder="Enter thread content"
                 />
-                {touched.password && errors.password && (
-                  <ErrorText>{errors.password}</ErrorText>
+                {touched.content && errors.content && (
+                  <ErrorText>{errors.content}</ErrorText>
                 )}
               </div>
 
@@ -128,15 +117,15 @@ const Login = () => {
                   size="large"
                   loading={loading || isSubmitting}
                 >
-                  Login
+                  Create Thread
                 </Button>
               </div>
             </Form>
           )}
         </Formik>
       </FormWrapper>
-    </LoginContainer>
+    </CreateThreadContainer>
   );
 };
 
-export default Login;
+export default CreateThread;
