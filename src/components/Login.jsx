@@ -69,7 +69,7 @@ const Login = () => {
       message.success("Connexion réussie!");
       navigate("/");
     } catch (err) {
-      const errorMessage = err.response?.data?.message || "Impossible de se connecter!";
+      const errorMessage = err.response?.data?.message || "Impossible de se connecter! Vous devez autoriser les cookies";
       dispatch(setError(errorMessage));
       message.error(errorMessage);
       setErrors({ general: errorMessage });
