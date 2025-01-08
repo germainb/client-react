@@ -83,7 +83,7 @@ const Login = () => {
     <LoginContainer>
       <FormWrapper>
         <LoginTitle>
-          <h2>Login</h2>
+          <h2>Connexion</h2>
         </LoginTitle>
         <Formik
           initialValues={{ email: "", password: "" }}
@@ -129,7 +129,7 @@ const Login = () => {
                   size="large"
                   loading={loading || isSubmitting}
                 >
-                  Connexion
+                  Se connecter
                 </Button>
               </div>
             </Form>
