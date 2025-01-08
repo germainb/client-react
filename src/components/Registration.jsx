@@ -100,7 +100,7 @@ const Registration = () => {
     <RegisterContainer>
       <FormWrapper>
         <RegisterTitle>
-          <h2>Sign Up</h2>
+          <h2>Inscription</h2>
         </RegisterTitle>
         <Formik
           initialValues={{ name: "", email: "", password: "" }}
