@@ -101,7 +101,7 @@ const Login = () => {
                   name="email"
                   type="email"
                   size="large"
-                  placeholder="Enter your email"
+                  placeholder="Entrez votre courriel"
                 />
                 {touched.email && errors.email && (
                   <ErrorText>{errors.email}</ErrorText>
@@ -114,7 +114,7 @@ const Login = () => {
                   as={Input.Password}
                   name="password"
                   size="large"
-                  placeholder="Enter your password"
+                  placeholder="Entrez votre mot de passe"
                 />
                 {touched.password && errors.password && (
                   <ErrorText>{errors.password}</ErrorText>
