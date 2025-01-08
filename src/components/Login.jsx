@@ -61,6 +61,7 @@ const Login = () => {
             email: response.email,
             name: response.name,
             avatar: response.avatar,
+            img: response.img
           },
           token: response.token,
         })

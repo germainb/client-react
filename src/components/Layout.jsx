@@ -1,4 +1,5 @@
 import React from "react";
+import { Buffer } from "buffer";
 import { Layout, Avatar, Dropdown, Menu } from "antd";
 import { LoginOutlined, UserAddOutlined, LogoutOutlined, MenuOutlined, PlusOutlined } from "@ant-design/icons";
 
@@ -86,7 +87,7 @@ const LayoutComponent = ({ children }) => {
         </>
       ) : (
         <>
-          <Menu.Item key="profile" icon={<Avatar src={user.avatar} />} disabled>
+          <Menu.Item key="profile" icon={ <Avatar src={`data: ${user.img.contentType};base64, ${Buffer.from(user.img.data).toString('base64')}`} alt={user.name} size={48} />} disabled>
             {user.name}
           </Menu.Item>
 

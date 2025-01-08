@@ -86,7 +86,7 @@ const Registration = () => {
       message.success("Registration successful!");
       navigate("/");
     } catch (err) {
-      const errorMessage = err.response?.data?.message || "Failed to register!";
+      const errorMessage = err.response?.data?.message || "Failed to register!" + err;
       dispatch(setError(errorMessage));
       message.error(errorMessage);
       setErrors({ general: errorMessage });

@@ -2,7 +2,7 @@
 
 import axios from "axios";
 
-const API_URL = "http://localhost:5000"; // Replace with your backend URL
+const API_URL = "https://serveur-react.vercel.app"; // Replace with your backend URL
 
 // Set up Axios instance
 const axiosInstance = axios.create({
@@ -25,11 +25,13 @@ axiosInstance.interceptors.request.use(
 // Register user
 const register = async (userData) => {
   const response = await axiosInstance.post("api/auth/register", userData, {
+    
     headers: {
       "Content-Type": "multipart/form-data", // Override the Content-Type header
     },
+    
   });
-  return response.data;
+  return response.data
 };
 
 // Login user
@@ -47,7 +49,18 @@ const getProfile = async () => {
 // Fetch all threads
 const getThreads = async () => {
     const response = await axiosInstance.get("api/threads");
+    console.log("Threads:"+ JSON.stringify(response.data));
     return response.data;
+};
+
+// Handle get author
+export const getUser = async (userId) => {
+  try {
+    const response = await axiosInstance.get(`api/auth/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Error getting author");
+  }
 };
 
 // Handle liking a thread

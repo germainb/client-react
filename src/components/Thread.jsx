@@ -1,11 +1,15 @@
 import React from "react";
+import { Buffer } from "buffer";
+import { useState,useEffect } from 'react';
 import { Avatar, Button, message, Modal } from "antd";
 import { AiFillLike, AiFillDislike, AiFillDelete } from "react-icons/ai";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { removeThread, updateThread } from "../redux/threadSlice";
-import { deleteThread, dislikeThread, likeThread } from "../services/authService";
+import { deleteThread, dislikeThread, getUser, likeThread } from "../services/authService";
+
+
 
 const ThreadWrapper = styled.div`
   position: relative; /* Ensures the delete icon can be positioned absolutely */
@@ -79,10 +83,23 @@ const DeleteButton = styled(Button)`
 
 const Thread = ({ thread }) => {
   const { user } = useSelector((state) => state.user);
-  console.log(`user : ${JSON.stringify(user)}`);
   const { _id, title, content, author, likes, dislikes } = thread;
+  const [authorUser,setAuthorUser] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+  useEffect(() => {
+    const getAuthorUser = async () => {
+      try {
+        const response = await getUser(author._id);
+        console.log("AuthorUser:"+response);
+        dispatch(setAuthorUser(response));
+      } catch (error) {
+        
+      }
+      }
+      getAuthorUser();
+  }, [author,dispatch]);
 
   const handleLike = async () => {
     if(!user) navigate("/login");
@@ -94,7 +111,7 @@ const Thread = ({ thread }) => {
       console.error("Error liking the thread:", error.message);
     }
   };
-  
+
   const handleDislike = async () => {
     if(!user) navigate("/login");
     try {
@@ -131,7 +148,7 @@ const Thread = ({ thread }) => {
       },
     });
   };
-
+  
   return (
     <ThreadWrapper>
       {user && user._id === author._id && (
@@ -140,7 +157,11 @@ const Thread = ({ thread }) => {
         </DeleteButton>
       )}
       <ThreadHeader>
-        <Avatar src={author.avatar} alt={author.name} size={48} />
+  
+ {console.log("AuthorUser:"+JSON.stringify(authorUser))}
+ {authorUser.img  && (
+        <Avatar src={`data: ${authorUser.img.contentType};base64, ${Buffer.from(authorUser.img.data).toString('base64')}`} alt={author.name} size={48} />
+ )}    
         <div style={{ marginLeft: 12 }}>
           <ThreadTitle>{title}</ThreadTitle>
           <span>By {author.name}</span>
