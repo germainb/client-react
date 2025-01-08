@@ -189,7 +189,7 @@ const Registration = () => {
                   size="large"
                   loading={isSubmitting}
                 >
-                  Register
+                  S'inscrire
                 </Button>
               </div>
             </Form>
