@@ -162,7 +162,7 @@ const Thread = ({ thread }) => {
  )}    
         <div style={{ marginLeft: 12 }}>
           <ThreadTitle>{title}</ThreadTitle>
-          <span>By {author.name}</span>
+          <span>Par {author.name}</span>
         </div>
       </ThreadHeader>
 
@@ -170,10 +170,10 @@ const Thread = ({ thread }) => {
 
       <Actions>
         <ActionButton onClick={handleLike} like icon={<AiFillLike size={20} />}>
-          <Count like>{likes.length} Likes</Count>
+          <Count like>{likes.length} J'aime</Count>
         </ActionButton>
         <ActionButton onClick={handleDislike} dislike  icon={<AiFillDislike size={20} />}>
-          <Count dislike >{dislikes.length} Dislikes</Count>
+          <Count dislike >{dislikes.length} J'aime pas</Count>
         </ActionButton>
       </Actions>
     </ThreadWrapper>
