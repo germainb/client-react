@@ -15,12 +15,10 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     //console.log("interceptor token:" + token);
-    if (token && typeof(token)  != 'undefined') {
+    if (token) {
       config.headers["Authorization"] = `Bearer ${token}`; // Attach token to headers
     }
-    else {
-      throw new Error("Vous devez autoriser les cookies");
-    }
+    
     return config;
   },
   (error) => Promise.reject(error)
