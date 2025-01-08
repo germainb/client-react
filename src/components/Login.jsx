@@ -51,9 +51,9 @@ const Login = () => {
     dispatch(setError(null));
     dispatch(setLoading(true));
     try {
-      console.log(`values ${JSON.stringify(values)}`);
+
       const response = await login(values);
-      console.log(`Response login ${JSON.stringify(response.data)}`);
+
       dispatch(
         setUser({
           user: {
