@@ -125,8 +125,8 @@ const Thread = ({ thread }) => {
   const handleDelete = async () => {
     // Show confirmation dialog using Ant Design's Modal.confirm
     Modal.confirm({
-      title: "Are you sure you want to delete this thread?",
-      content: "This action cannot be undone.",
+      title: "Êtes vous sûr de vouloir supprimer ce message?",
+      content: "Cette action est irréversible.",
       onOk: async () => {
         try {
           // Perform the delete thread API call using the deleteThread function from authService

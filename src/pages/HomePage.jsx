@@ -80,9 +80,9 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1 style={{ textAlign: "center", marginBottom: "30px" }}>All Threads</h1>
+      <h1 style={{ textAlign: "center", marginBottom: "30px" }}>Tous les messages</h1>
       {threads.length === 0 ? (
-        <p style={{ textAlign: "center" }}>No threads available.</p>
+        <p style={{ textAlign: "center" }}>Pas de messages disponibles.</p>
       ) : (
         <ThreadsWrapper>
           {threads.map((thread) => (

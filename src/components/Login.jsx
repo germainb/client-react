@@ -66,10 +66,10 @@ const Login = () => {
           token: response.token,
         })
       );
-      message.success("Login successful!");
+      message.success("Connexion réussie!");
       navigate("/");
     } catch (err) {
-      const errorMessage = err.response?.data?.message || "Failed to login!";
+      const errorMessage = err.response?.data?.message || "Impossible de se connecter!";
       dispatch(setError(errorMessage));
       message.error(errorMessage);
       setErrors({ general: errorMessage });
@@ -95,7 +95,7 @@ const Login = () => {
               {errors.general && <ErrorText>{errors.general}</ErrorText>}
 
               <div>
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email">Courriel</label>
                 <Field
                   as={Input}
                   name="email"
@@ -109,7 +109,7 @@ const Login = () => {
               </div>
 
               <div style={{ marginTop: "16px" }}>
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Mot de passe</label>
                 <Field
                   as={Input.Password}
                   name="password"
@@ -129,7 +129,7 @@ const Login = () => {
                   size="large"
                   loading={loading || isSubmitting}
                 >
-                  Login
+                  Connexion
                 </Button>
               </div>
             </Form>

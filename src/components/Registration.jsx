@@ -112,7 +112,7 @@ const Registration = () => {
               {errors.general && <ErrorText>{errors.general}</ErrorText>}
 
               <div>
-                <label htmlFor="name">Username</label>
+                <label htmlFor="name">Nom d'usager</label>
                 <Field
                   as={Input}
                   name="name"
@@ -125,7 +125,7 @@ const Registration = () => {
               </div>
 
               <div style={{ marginTop: "16px" }}>
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email">Courriel</label>
                 <Field
                   as={Input}
                   name="email"
@@ -139,7 +139,7 @@ const Registration = () => {
               </div>
 
               <div style={{ marginTop: "16px" }}>
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Mot de passe</label>
                 <Field
                   as={Input.Password}
                   name="password"
@@ -175,7 +175,7 @@ const Registration = () => {
                   ) : (
                     <div>
                       <PlusOutlined />
-                      <div style={{ marginTop: 8 }}>Upload</div>
+                      <div style={{ marginTop: 8 }}>Envoyer</div>
                     </div>
                   )}
                 </UploadProfile>

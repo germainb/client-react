@@ -79,10 +79,10 @@ const LayoutComponent = ({ children }) => {
       {!user ? (
         <>
           <Menu.Item key="login" icon={<LoginOutlined />} onClick={handleLogin}>
-            Login
+            Connexion
           </Menu.Item>
           <Menu.Item key="register" icon={<UserAddOutlined />} onClick={handleRegister}>
-            Register
+            Inscription
           </Menu.Item>
         </>
       ) : (
@@ -92,11 +92,11 @@ const LayoutComponent = ({ children }) => {
           </Menu.Item>
 
           <Menu.Item key="create" icon={<PlusOutlined />} onClick={goToCreateThread}>
-            Create
+            Ajouter un message
           </Menu.Item>
 
           <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
-            Logout
+            Se déconnecter
           </Menu.Item>
         </>
       )}

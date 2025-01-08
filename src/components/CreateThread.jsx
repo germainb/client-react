@@ -72,7 +72,7 @@ const CreateThread = () => {
     <CreateThreadContainer>
       <FormWrapper>
         <CreateThreadTitle>
-          <h2>Create Thread</h2>
+          <h2>Messagerie</h2>
         </CreateThreadTitle>
         <Formik
           initialValues={{ title: "", content: "" }}
@@ -84,7 +84,7 @@ const CreateThread = () => {
               {errors.general && <ErrorText>{errors.general}</ErrorText>}
 
               <div>
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title">Titre</label>
                 <Field
                   as={Input}
                   name="title"
@@ -97,7 +97,7 @@ const CreateThread = () => {
               </div>
 
               <div style={{ marginTop: "16px" }}>
-                <label htmlFor="content">Content</label>
+                <label htmlFor="content">Contenu</label>
                 <Field
                   as={Input.TextArea}
                   name="content"
@@ -117,7 +117,7 @@ const CreateThread = () => {
                   size="large"
                   loading={loading || isSubmitting}
                 >
-                  Create Thread
+                  Enregistrer
                 </Button>
               </div>
             </Form>
