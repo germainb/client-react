@@ -96,7 +96,7 @@ const LayoutComponent = ({ children }) => {
           </Menu.Item>
 
           <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
-            Se déconnecter
+            Déconnexion
           </Menu.Item>
         </>
       )}
@@ -108,7 +108,7 @@ const LayoutComponent = ({ children }) => {
       <StyledHeader>
         <LogoContainer onClick={goToHome}>
           <ReactLogo />
-          Thread
+          Messagerie
         </LogoContainer>
         <Dropdown overlay={menuItems}  placement="bottomRight">
           <StyledMenuIcon />
