@@ -49,7 +49,6 @@ const getProfile = async () => {
 // Fetch all threads
 const getThreads = async () => {
     const response = await axiosInstance.get("api/threads");
-    console.log("Threads:"+ JSON.stringify(response.data));
     return response.data;
 };
 
