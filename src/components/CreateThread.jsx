@@ -58,10 +58,10 @@ const CreateThread = () => {
       message.success("Thread created successfully!");
       navigate("/"); // Redirect to homepage
     } catch (err) {
-      const errorMessage = err.response?.data?.message || "Failed to create thread!";
-      dispatch(setError(errorMessage));
-      message.error(errorMessage);
-      setErrors({ general: errorMessage });
+      //const errorMessage = err || "Failed to create thread!";
+      //dispatch(setError(errorMessage));
+      //message.error(errorMessage);
+      //setErrors({ general: errorMessage });
     } finally {
       dispatch(setLoading(false));
       setSubmitting(false);
