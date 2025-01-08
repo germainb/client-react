@@ -92,7 +92,6 @@ const Thread = ({ thread }) => {
     const getAuthorUser = async () => {
       try {
         const response = await getUser(author._id);
-        console.log("AuthorUser:"+response);
         dispatch(setAuthorUser(response));
       } catch (error) {
         
@@ -158,7 +157,6 @@ const Thread = ({ thread }) => {
       )}
       <ThreadHeader>
   
- {console.log("AuthorUser:"+JSON.stringify(authorUser))}
  {authorUser.img  && (
         <Avatar src={`data: ${authorUser.img.contentType};base64, ${Buffer.from(authorUser.img.data).toString('base64')}`} alt={author.name} size={48} />
  )}    
