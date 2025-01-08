@@ -57,6 +57,7 @@ const getThreads = async () => {
 export const getUser = async (userId) => {
   try {
     const response = await axiosInstance.get(`api/auth/${userId}`);
+    
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Error getting author");

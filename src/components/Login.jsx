@@ -63,7 +63,7 @@ const Login = () => {
             avatar: response.avatar,
             img: response.img
           },
-          //: response.token,
+          token: response.token,
         })
       );
       message.success("Login successful!");
