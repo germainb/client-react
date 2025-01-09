@@ -72,6 +72,18 @@ const LayoutComponent = ({ children }) => {
     navigate("/create-thread");
   };
 
+  const handleAvatarChange = (info) => {
+    const file = info.file.originFileObj;
+
+    if (file) {
+      // Set the avatar file
+      setAvatarFile(file);
+      // Generate preview URL
+      const reader = new FileReader();
+      reader.onload = (e) => setAvatarPreview(e.target.result);
+      reader.readAsDataURL(file);
+    }
+  };
 
   // Dropdown menu items for authenticated and unauthenticated users
   const menuItems = (
@@ -87,7 +99,7 @@ const LayoutComponent = ({ children }) => {
         </>
       ) : (
         <>
-          <Menu.Item key="profile" icon={ <Avatar src={`data: ${user.img.contentType};base64, ${Buffer.from(user.img.data).toString('base64')}`} alt={user.name} size={48} />} >
+          <Menu.Item key="profile" icon={ <Avatar src={`data: ${user.img.contentType};base64, ${Buffer.from(user.img.data).toString('base64')}`} alt={user.name} size={48} onClick={handleAvatarChange} />} >
             {user.name}
           </Menu.Item>
 
