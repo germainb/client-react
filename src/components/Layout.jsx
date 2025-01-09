@@ -49,6 +49,7 @@ const StyledMenuIcon = styled(MenuOutlined)`
 const LayoutComponent = ({ children }) => {
   const { user } = useSelector((state) => state.user);
   const [avatarPreview, setAvatarPreview] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
