@@ -46,7 +46,7 @@ const StyledMenuIcon = styled(MenuOutlined)`
   }
 `;
 
-const LayoutComponent = ({ children }) => {
+const LayoutComponent = ({ children}) => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -110,11 +110,11 @@ const LayoutComponent = ({ children }) => {
           <ReactLogo />
           Messagerie
         </LogoContainer>
-        <Dropdown overlay={menuItems}  placement="bottomRight">
+        <Dropdown menu={menuItems}  placement="bottomRight">
           <StyledMenuIcon />
         </Dropdown>
       </StyledHeader>
-      <Content style={{ minHeight: "90vh", padding: "20px" }}>{children}</Content>
+      <Content style={{ minHeight: "90vh", padding: "20px" }}><div className="Row">{children}</div></Content>
     </Layout>
   );
 };
