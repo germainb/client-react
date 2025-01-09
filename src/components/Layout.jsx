@@ -87,7 +87,7 @@ const LayoutComponent = ({ children }) => {
         </>
       ) : (
         <>
-          <Menu.Item key="profile" icon={ <Avatar src={`data: ${user.img.contentType};base64, ${Buffer.from(user.img.data).toString('base64')}`} alt={user.name} size={48} />} disabled>
+          <Menu.Item key="profile" icon={ <Avatar src={`data: ${user.img.contentType};base64, ${Buffer.from(user.img.data).toString('base64')}`} alt={user.name} size={48} />} >
             {user.name}
           </Menu.Item>
 
