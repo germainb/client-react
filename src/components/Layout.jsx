@@ -46,7 +46,7 @@ const StyledMenuIcon = styled(MenuOutlined)`
   }
 `;
 
-const LayoutComponent = ({ children}) => {
+const LayoutComponent = ({ childrens }) => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -114,7 +114,7 @@ const LayoutComponent = ({ children}) => {
           <StyledMenuIcon />
         </Dropdown>
       </StyledHeader>
-      <Content style={{ minHeight: "90vh", padding: "20px" }}><div className="Row">{children}</div></Content>
+      <Content style={{ minHeight: "90vh", padding: "20px" }}><div className="Row">{childrens}</div></Content>
     </Layout>
   );
 };
