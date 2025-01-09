@@ -114,7 +114,7 @@ const LayoutComponent = ({ children }) => {
           <StyledMenuIcon />
         </Dropdown>
       </StyledHeader>
-      <Content style={{ minHeight: "90vh", padding: "20px" }}>{React.Children.only(children)}</Content>
+      <Content style={{ minHeight: "90vh", padding: "20px" }}>{children}</Content>
     </Layout>
   );
 };
