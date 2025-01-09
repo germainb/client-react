@@ -46,7 +46,7 @@ const StyledMenuIcon = styled(MenuOutlined)`
   }
 `;
 
-const LayoutComponent = ({ childrens }) => {
+const LayoutComponent = ({ children }) => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -96,7 +96,7 @@ const LayoutComponent = ({ childrens }) => {
           </Menu.Item>
 
           <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
-            Déconnexion
+            Se déconnecter
           </Menu.Item>
         </>
       )}
@@ -114,7 +114,7 @@ const LayoutComponent = ({ childrens }) => {
           <StyledMenuIcon />
         </Dropdown>
       </StyledHeader>
-      <Content style={{ minHeight: "90vh", padding: "20px" }}><div className="Row">{childrens}</div></Content>
+      <Content style={{ minHeight: "90vh", padding: "20px" }}>{children}</Content>
     </Layout>
   );
 };
