@@ -36,6 +36,18 @@ const register = async (userData) => {
   return response.data
 };
 
+// Update avatar
+const updateAvatar = async (user,userData) => {
+  const response = await axiosInstance.post(`api/auth/updateAvatar/${user._id}`, userData, {
+    
+    headers: {
+      "Content-Type": "multipart/form-data", // Override the Content-Type header
+    },
+    
+  });
+  return response.data
+};
+
 // Login user
 const login = async (userData) => {
   const response = await axiosInstance.post("api/auth/login", userData);
@@ -105,4 +117,4 @@ const deleteThread = async (threadId) => {
   }
 };
 
-export { register, login, getProfile, getThreads, createThread, deleteThread };
+export { register, login, getProfile, getThreads, createThread, deleteThread,updateAvatar };

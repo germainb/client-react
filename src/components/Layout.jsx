@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Buffer } from "buffer";
-import { Layout, Avatar, Dropdown, Menu } from "antd";
+import { Layout, Avatar, Dropdown, Menu,Upload } from "antd";
 import { LoginOutlined, UserAddOutlined, LogoutOutlined, MenuOutlined, PlusOutlined } from "@ant-design/icons";
-
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../redux/userSlice";
+import { logout, setUser, updateUser } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as ReactLogo } from "../assets/thread-logo1.svg"; // Replace with your actual logo
+import { Formik, Form, Field } from "formik";
+import { login,updateAvatar } from "../services/authService";
 
 const { Header, Content } = Layout;
 
@@ -18,6 +19,13 @@ const StyledHeader = styled(Header)`
   align-items: center;
   padding: 0 20px;
   background-color: #001529;
+`;
+
+const UploadProfile = styled(Upload)`
+  .ant-upload {
+    width: 70px !important;
+    height: 70px !important;
+  }
 `;
 
 const LogoContainer = styled.div`
@@ -47,18 +55,14 @@ const StyledMenuIcon = styled(MenuOutlined)`
 `;
 
 const LayoutComponent = ({ children }) => {
+ 
   const { user } = useSelector((state) => state.user);
-  const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = () => {
     navigate("/login");
-  };
-
-  const handleRegister = () => {
-    navigate("/register");
   };
 
   const handleLogout = () => {
@@ -76,17 +80,45 @@ const LayoutComponent = ({ children }) => {
 
   const handleAvatarChange = (info) => {
     const file = info.file.originFileObj;
-
+    console.log("Info:"+info.file.name);
     if (file) {
       // Set the avatar file
       setAvatarFile(file);
-      // Generate preview URL
-      const reader = new FileReader();
-      reader.onload = (e) => setAvatarPreview(e.target.result);
-      reader.readAsDataURL(file);
+      handleUploadAvatar();
     }
   };
 
+   const handleUploadAvatar = async () => {
+    const formData = new FormData();
+    
+    formData.append("avatar", avatarFile);
+
+    try {
+      const response = await updateAvatar(user,formData);
+       dispatch(
+              setUser({
+                user: {
+                  _id: response._id,
+                  email: response.email,
+                  name: response.name,
+                  avatar: response.avatar,
+                  img: response.img
+                }
+              })
+            );
+      navigate("/");
+      
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || "Failed to update avatar!" + err;
+      console.log (errorMessage);
+    } finally {
+     
+    }
+  };
+
+  const handleRegister = () => {
+    navigate("/register");
+  };
   // Dropdown menu items for authenticated and unauthenticated users
   const menuItems = (
     <Menu>
@@ -101,10 +133,22 @@ const LayoutComponent = ({ children }) => {
         </>
       ) : (
         <>
-          <Menu.Item key="profile" icon={ <Avatar src={`data: ${user.img.contentType};base64, ${Buffer.from(user.img.data).toString('base64')}`} alt={user.name} size={48} onClick={handleAvatarChange} />} >
-            {user.name}
-          </Menu.Item>
-
+          <Formik>
+            <Form>
+              <UploadProfile 
+                  name="avatar"
+                  listType="picture-circle"
+                  showUploadList={false}
+                  beforeUpload={() => true }
+                  onChange={handleAvatarChange}
+                  action={`https://serveur-react.vercel.app/api/auth/updateAvatar/${user._id}`}
+                  style={{}}
+                >
+                <Menu.Item key="profile" icon={ <Avatar style={{marginLeft:"7px"}} src={`data: ${user.img.contentType};base64, ${Buffer.from(user.img.data).toString('base64')}`} alt={user.name} size={66}  />} />  
+                </UploadProfile>
+              </Form>
+          </Formik>
+         {user.name}
           <Menu.Item key="create" icon={<PlusOutlined />} onClick={goToCreateThread}>
             Ajouter un message
           </Menu.Item>
