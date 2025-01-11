@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, setUser, updateUser } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as ReactLogo } from "../assets/thread-logo1.svg"; // Replace with your actual logo
+import mainLogo from "../assets/bouc.png"; // Replace with your actual logo
 import { Formik, Form, Field } from "formik";
 import { login,updateAvatar } from "../services/authService";
 
@@ -165,8 +165,8 @@ const LayoutComponent = ({ children }) => {
     <Layout>
       <StyledHeader>
         <LogoContainer onClick={goToHome}>
-          <ReactLogo />
-          Messagerie
+        <img  src={mainLogo} alt="Face de bouc" width="70" height="70"/>
+          Face de bouc
         </LogoContainer>
         <Dropdown overlay={menuItems}  placement="bottomRight">
           <StyledMenuIcon />

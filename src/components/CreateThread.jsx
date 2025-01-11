@@ -72,7 +72,7 @@ const CreateThread = () => {
     <CreateThreadContainer>
       <FormWrapper>
         <CreateThreadTitle>
-          <h2>Messagerie</h2>
+          <h2>Ajouter un message</h2>
         </CreateThreadTitle>
         <Formik
           initialValues={{ title: "", content: "" }}
