@@ -191,7 +191,7 @@ const LayoutComponent = ({ children }) => {
                   action={`https://serveur-react.vercel.app/api/auth/updateAvatar/${user._id}`}
                   style={{}}
                 >
-                  {!user.img ? 
+                  {user.img === undefined ? 
                     (
                       <Menu.Item key="profile"  />
                     )
