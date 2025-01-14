@@ -191,7 +191,14 @@ const LayoutComponent = ({ children }) => {
                   action={`https://serveur-react.vercel.app/api/auth/updateAvatar/${user._id}`}
                   style={{}}
                 >
-                <Menu.Item key="profile" icon={ <Avatar style={{marginLeft:"7px"}} src={`data: ${user.img.contentType};base64, ${Buffer.from(user.img.data).toString('base64')}`} alt={user.name} size={66}  />} />  
+                  {!user.img ? 
+                    (
+                      <Menu.Item key="profile"  />
+                    )
+                    :
+                    (
+                      <Menu.Item key="profile" icon={ <Avatar style={{marginLeft:"7px"}} src={`data: ${user.img.contentType};base64, ${Buffer.from(user.img.data).toString('base64')}`} alt={user.name} size={66}  />} />  
+                    )}
                 </UploadProfile>
               </Form>
           </Formik>
