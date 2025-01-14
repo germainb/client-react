@@ -135,7 +135,20 @@ const LayoutComponent = ({ children }) => {
     formData.append("picture", response.picture.data.url);
     try {
     const response = await loginFacebook(formData);
-    console.log("loginFacebook:" + response);
+    dispatch(
+      setUser({
+        user: {
+          _id: response._id,
+          email: response.email,
+          name: response.name,
+          avatar: response.avatar,
+          img: response.img
+        },
+        token: response.token,
+      })
+    );
+ 
+    navigate("/");
     }
     catch (err) {
       const errorMessage = err.response?.data?.message || "Failed to log Facebook!" + err;
