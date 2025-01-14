@@ -142,7 +142,7 @@ const LayoutComponent = ({ children }) => {
           email: response.email,
           name: response.name,
           avatar: response.avatar,
-          img: response.picture
+          img: response.img
         },
         token: response.token,
       })
