@@ -15,7 +15,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     console.log("interceptor token:" + token);
-    if (token && token != 'undefined') {
+    if (token && token !== 'undefined') {
       config.headers["Authorization"] = `Bearer ${token}`; // Attach token to headers
     }
     else {
@@ -55,6 +55,12 @@ const updateAvatar = async (user,userData) => {
 // Login user
 const login = async (userData) => {
   const response = await axiosInstance.post("api/auth/login", userData);
+  return response.data;
+};
+
+// Login Facebook
+const loginFacebook = async (userData) => {
+  const response = await axiosInstance.post("api/auth/loginFacebook", userData);
   return response.data;
 };
 
@@ -121,4 +127,4 @@ const deleteThread = async (threadId) => {
   }
 };
 
-export { register, login, getProfile, getThreads, createThread, deleteThread,updateAvatar };
+export { register, login, loginFacebook, getProfile, getThreads, createThread, deleteThread,updateAvatar };

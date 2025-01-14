@@ -8,7 +8,8 @@ import { logout, setUser, updateUser } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 import mainLogo from "../assets/bouc.png"; // Replace with your actual logo
 import { Formik, Form, Field } from "formik";
-import { login,updateAvatar } from "../services/authService";
+import { login, loginFacebook, updateAvatar } from "../services/authService";
+import FacebookLogin from 'react-facebook-login';
 
 const { Header, Content } = Layout;
 
@@ -119,6 +120,22 @@ const LayoutComponent = ({ children }) => {
   const handleRegister = () => {
     navigate("/register");
   };
+
+  const handleFacebookCallback = (response) => {
+    if (response?.status === "unknown") {
+        console.error('Sorry!', 'Something went wrong with facebook Login.');
+     return;
+    }
+    setAvatarFile(response.picture.data.url);
+    const formData = new FormData();
+    
+    formData.append("email", response.email);
+    formData.append("name", response.name);
+    formData.append("picture", response.picture.data.url);
+    response = loginFacebook(formData);
+    console.log(response);
+
+  };
   // Dropdown menu items for authenticated and unauthenticated users
   const menuItems = (
     <Menu>
@@ -130,6 +147,15 @@ const LayoutComponent = ({ children }) => {
           <Menu.Item key="register" icon={<UserAddOutlined />} onClick={handleRegister}>
             Inscription
           </Menu.Item>
+          <Menu.Item key="FacebookLogin" icon={<LoginOutlined />} >
+          <FacebookLogin 
+            buttonStyle={{padding:"6px"}}  
+            appId="1582303069097930"  // we need to get this from facebook developer console by setting the app.
+            autoLoad={false}  
+            fields="name,email,picture"  
+            callback={handleFacebookCallback}/>
+          </Menu.Item>
+          
         </>
       ) : (
         <>
