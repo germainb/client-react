@@ -18,7 +18,7 @@ const StyledHeader = styled(Header)`
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  background-color: #001529;
+  background-color:rgb(24, 119, 242);
 `;
 
 const UploadProfile = styled(Upload)`
