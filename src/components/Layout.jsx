@@ -126,6 +126,7 @@ const LayoutComponent = ({ children }) => {
         console.error('Sorry!', 'Something went wrong with facebook Login.');
      return;
     }
+    console.log("handleFacebookCallback:"+response);
     setAvatarFile(response.picture.data.url);
     const formData = new FormData();
     
