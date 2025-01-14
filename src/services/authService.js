@@ -15,8 +15,12 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     console.log("interceptor token:" + token);
-    if (token) {
+    if (token && token != 'undefined') {
       config.headers["Authorization"] = `Bearer ${token}`; // Attach token to headers
+    }
+    else {
+      delete axios.defaults.headers.common["Authorization"];
+      localStorage.removeItem('token')
     }
     
     return config;

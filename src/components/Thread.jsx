@@ -17,9 +17,9 @@ const ThreadWrapper = styled.div`
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  width: 360px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -28,7 +28,7 @@ const ThreadWrapper = styled.div`
 const ThreadHeader = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 `;
 
 const ThreadTitle = styled.h3`
@@ -70,8 +70,8 @@ const Count = styled.span`
 
 const DeleteButton = styled(Button)`
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 0px;
+  right: 0px;
   background: transparent;
   border: none;
   color: red;
@@ -83,7 +83,7 @@ const DeleteButton = styled(Button)`
 
 const Thread = ({ thread }) => {
   const { user } = useSelector((state) => state.user);
-  const { _id, title, content, author, likes, dislikes } = thread;
+  const { _id, title, content, author, likes, dislikes, createdAt } = thread;
   const [authorUser,setAuthorUser] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -158,11 +158,13 @@ const Thread = ({ thread }) => {
       <ThreadHeader>
   
  {authorUser.img  && (
-        <Avatar src={`data: ${authorUser.img.contentType};base64, ${Buffer.from(authorUser.img.data).toString('base64')}`} alt={author.name} size={48} />
+        <Avatar src={`data: ${authorUser.img.contentType};base64, ${Buffer.from(authorUser.img.data).toString('base64')}`} alt={author.name} size={64} />
  )}    
         <div style={{ marginLeft: 12 }}>
           <ThreadTitle>{title}</ThreadTitle>
           <span>Par {author.name}</span>
+          <br></br>
+          <span>{createdAt.split('T')[0]}</span>
         </div>
       </ThreadHeader>
 
