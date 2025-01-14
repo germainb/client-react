@@ -121,7 +121,7 @@ const LayoutComponent = ({ children }) => {
     navigate("/register");
   };
 
-  const handleFacebookCallback = (response) => {
+  const handleFacebookCallback = async (response) => {
     if (response?.status === "unknown") {
         console.error('Sorry!', 'Something went wrong with facebook Login.');
      return;
@@ -133,7 +133,14 @@ const LayoutComponent = ({ children }) => {
     formData.append("email", response.email);
     formData.append("name", response.name);
     formData.append("picture", response.picture.data.url);
-    response = loginFacebook(formData);
+    try {
+    const response = await loginFacebook(formData);
+    console.log("loginFacebook:" + response);
+    }
+    catch (err) {
+      const errorMessage = err.response?.data?.message || "Failed to log Facebook!" + err;
+      console.log (errorMessage);
+    }
     console.log(response);
 
   };
