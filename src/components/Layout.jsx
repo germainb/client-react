@@ -10,6 +10,7 @@ import mainLogo from "../assets/bouc.png"; // Replace with your actual logo
 import { Formik, Form, Field } from "formik";
 import { login, loginFacebook, updateAvatar } from "../services/authService";
 import FacebookLogin from 'react-facebook-login';
+import connexionFacebook from "../assets/connexionFacebook.png"
 
 const { Header, Content } = Layout;
 
@@ -54,6 +55,9 @@ const StyledMenuIcon = styled(MenuOutlined)`
     color: #fff;
   }
 `;
+export const BoutonFacebook = () => {
+  return (<img src={connexionFacebook} width="200" />)
+};
 
 const LayoutComponent = ({ children }) => {
  
@@ -169,8 +173,10 @@ const LayoutComponent = ({ children }) => {
             Inscription
           </Menu.Item>
           <Menu.Item key="FacebookLogin" icon={<LoginOutlined />} >
-          <FacebookLogin 
-            buttonStyle={{padding:"6px"}}  
+          <FacebookLogin  
+            icon={<BoutonFacebook />}
+            cssClass="my-facebook-button-class"
+            textButton=""
             appId="1582303069097930"  // we need to get this from facebook developer console by setting the app.
             autoLoad={false}  
             fields="name,email,picture"  
