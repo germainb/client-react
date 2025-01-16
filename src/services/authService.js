@@ -137,7 +137,7 @@ const addComment = async (values,threadId,userId) => {
   }
 };
 
-// Handle get author
+// Handle get comments
 const getComments = async (threadId) => {
   try {
     const response = await axiosInstance.get(`api/comments/${threadId}`);
@@ -147,4 +147,13 @@ const getComments = async (threadId) => {
     throw new Error(error.response?.data?.message || "Error getting author");
   }
 };
-export { register, login, loginFacebook, getProfile, getThreads, createThread, deleteThread,updateAvatar, addComment, getComments };
+
+const sendEmail = async (values) => {
+  try {
+    const response = await axiosInstance.post("/api/comments/sendEmail",values);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Error commenting thread");
+  }
+};
+export { register, login, loginFacebook, getProfile, getThreads, createThread, deleteThread,updateAvatar, addComment, getComments, sendEmail };

@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { removeThread, updateThread } from "../redux/threadSlice";
-import { deleteThread, dislikeThread, likeThread, addComment, getComments } from "../services/authService";
+import { deleteThread, dislikeThread, likeThread, addComment, getComments, sendEmail } from "../services/authService";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
@@ -180,6 +180,11 @@ const Thread = ({ thread }) => {
     if(!user) navigate("/login");
     try {
       const response = await addComment(values,_id,user._id); // Call the like API
+      const formData = new FormData();
+      formData.append("commentaire", values.commentaire);
+      formData.append("email", author.email);
+      formData.append("nom", user.name);
+      response = await sendEmail(formData);
       window.location.reload();
     } catch (error) {
       message.error(error.message); 
