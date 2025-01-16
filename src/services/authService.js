@@ -127,4 +127,24 @@ const deleteThread = async (threadId) => {
   }
 };
 
-export { register, login, loginFacebook, getProfile, getThreads, createThread, deleteThread,updateAvatar };
+// Handle liking a thread
+const addComment = async (values,threadId,userId) => {
+  try {
+    const response = await axiosInstance.post(`/api/comments/${threadId}/${userId}`,values);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Error commenting thread");
+  }
+};
+
+// Handle get author
+const getComments = async (threadId) => {
+  try {
+    const response = await axiosInstance.get(`api/comments/${threadId}`);
+    
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Error getting author");
+  }
+};
+export { register, login, loginFacebook, getProfile, getThreads, createThread, deleteThread,updateAvatar, addComment, getComments };

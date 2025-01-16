@@ -1,14 +1,15 @@
 import React from "react";
 import { Buffer } from "buffer";
 import { useState,useEffect } from 'react';
-import { Avatar, Button, message, Modal } from "antd";
+import { Avatar, Button, Input, message, Modal } from "antd";
 import { AiFillLike, AiFillDislike, AiFillDelete } from "react-icons/ai";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { removeThread, updateThread } from "../redux/threadSlice";
-import { deleteThread, dislikeThread, getUser, likeThread } from "../services/authService";
-
+import { deleteThread, dislikeThread, likeThread, addComment, getComments } from "../services/authService";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
 
 
 const ThreadWrapper = styled.div`
@@ -80,25 +81,52 @@ const DeleteButton = styled(Button)`
   }
 `;
 
+const ErrorText = styled.div`
+  color: red;
+  margin-bottom: 8px;
+`;
+
+const Commentaires = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto; /* Ensures buttons are at the bottom */
+  width: 100%;
+`;
+
+const Commentaire = styled.div`
+  display: flex;
+  align-items: left;
+  justify-content: space-between;
+  margin-top: auto; /* Ensures buttons are at the bottom */
+  width: 100%;
+`;
 
 const Thread = ({ thread }) => {
   const { user } = useSelector((state) => state.user);
   const { _id, title, content, author, likes, dislikes, createdAt } = thread;
-  const [authorUser,setAuthorUser] = useState({});
+  const [comments,setComments] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
   useEffect(() => {
-    const getAuthorUser = async () => {
+    const getCommentaires = async () => {
+      var response="";
       try {
-        const response = await getUser(author._id);
-        dispatch(setAuthorUser(response));
+        response = await getComments(_id);
+        if (response !== "") 
+          dispatch(setComments(response));
       } catch (error) {
-        
+        console.log("erreur:"+error);
       }
       }
-      getAuthorUser();
-  }, [author,dispatch]);
+      getCommentaires();
+  }, [_id,dispatch]);
+
+  const commentSchema = Yup.object().shape({
+    commentaire: Yup.string().required("Commentaire requis")
+  });
 
   const handleLike = async () => {
     if(!user) navigate("/login");
@@ -148,6 +176,17 @@ const Thread = ({ thread }) => {
     });
   };
   
+  const handleAjouterCommentaire = async (values) => {
+    if(!user) navigate("/login");
+    try {
+      const response = await addComment(values,_id,user._id); // Call the like API
+      window.location.reload();
+    } catch (error) {
+      message.error(error.message); 
+      console.error("Error adding comment:", error.message);
+    }
+  };
+
   return (
     <ThreadWrapper>
       {user && user._id === author._id && (
@@ -157,8 +196,8 @@ const Thread = ({ thread }) => {
       )}
       <ThreadHeader>
   
- {authorUser.img  && (
-        <Avatar src={`data: ${authorUser.img.contentType};base64, ${Buffer.from(authorUser.img.data).toString('base64')}`} alt={author.name} size={64} />
+ {author.img  && (
+        <Avatar src={`data: ${author.img.contentType};base64, ${Buffer.from(author.img.data).toString('base64')}`} alt={author.name} size={64} />
  )}    
         <div style={{ marginLeft: 12 }}>
           <ThreadTitle>{title}</ThreadTitle>
@@ -178,6 +217,57 @@ const Thread = ({ thread }) => {
           <Count dislike >{dislikes.length} J'aime pas</Count>
         </ActionButton>
       </Actions>
+      <div>
+        {comments.map((comment) => (
+                <ThreadHeader key={comment._id}>
+                  <div style={{verticalAlign:"top"}}><Avatar src={`data: ${comment.author.img.contentType};base64, ${Buffer.from(comment.author.img.data).toString('base64')}`} alt={author.name} size={32} /></div>
+                  <table style={{width:"100%",padding:"5px",borderRadius:"5px",marginLeft:"5px",marginTop:"5px",backgroundColor:"#E5E4E2"}}>
+                    <tbody>
+                    <tr>
+                      <td><span><b>{comment.author.name}</b></span></td>
+                    </tr>
+                    <tr>
+                      <td><span>{comment.content}</span></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </ThreadHeader>
+              ))}
+      </div>
+      {user && (
+          <Formik
+          initialValues={{ commentaire: "" }}
+          validationSchema={commentSchema}
+          onSubmit={handleAjouterCommentaire}
+        >
+          {({ errors, touched, isSubmitting })=> (
+            <Form>
+              <div>
+                <br></br>
+                <label htmlFor="commentaire">Commentaire:</label>
+                <br></br>
+                <Field
+                  as={Input}
+                  name="commentaire"
+                  size="large"
+                  placeholder="Entrez un commentaire"
+                  style={{width:"240px"}} 
+                />
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  size="large"
+                >
+                  Ajouter
+                </Button>
+              </div>
+              {touched.commentaire && errors.commentaire && (
+                  <ErrorText>{errors.commentaire}</ErrorText>
+                )}
+            </Form>
+          )}
+          </Formik>
+    )}
     </ThreadWrapper>
   );
 };
