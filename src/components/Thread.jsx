@@ -184,7 +184,7 @@ const Thread = ({ thread }) => {
       formData.append("commentaire", values.commentaire);
       formData.append("email", author.email);
       formData.append("nom", user.name);
-      response = await sendEmail(formData);
+      sendEmail(formData);
       window.location.reload();
     } catch (error) {
       message.error(error.message); 
