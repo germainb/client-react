@@ -1,15 +1,18 @@
-import React from "react";
+import React,{Fragment} from "react";
 import { Buffer } from "buffer";
 import { useState,useEffect } from 'react';
 import { Avatar, Button, Input, message, Modal } from "antd";
 import { AiFillLike, AiFillDislike, AiFillDelete } from "react-icons/ai";
 import styled from "styled-components";
+import { styled  as styled2} from '@mui/material/styles';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { removeThread, updateThread } from "../redux/threadSlice";
-import { deleteThread, dislikeThread, likeThread, addComment, getComments, sendEmail } from "../services/authService";
+import { deleteThread, dislikeThread, likeThread, addComment, getComments, sendEmail, getUser } from "../services/authService";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import { Tooltip } from 'react-tooltip';
+
 
 
 const ThreadWrapper = styled.div`
@@ -103,13 +106,17 @@ const Commentaire = styled.div`
   width: 100%;
 `;
 
+
+
 const Thread = ({ thread }) => {
   const { user } = useSelector((state) => state.user);
   const { _id, title, content, author, likes, dislikes, createdAt } = thread;
   const [comments,setComments] = useState([]);
+  const [listLikes,setListLikes] = useState("");
+  const [listDislikes,setListDislikes] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     const getCommentaires = async () => {
       var response="";
@@ -124,7 +131,32 @@ const Thread = ({ thread }) => {
       getCommentaires();
   }, [_id,dispatch]);
 
-  const commentSchema = Yup.object().shape({
+  useEffect(() => {
+    let listAuthor = "";
+    const getListLikes = () => {
+      likes.map((author) => {
+        listAuthor +='<div style="width:100px;position: relative;"><img style="border-radius: 50%;z-index: 1;" src="data:';
+        listAuthor += author.img.contentType + ";base64, ";
+        listAuthor += Buffer.from(author.img.data).toString('base64');
+        listAuthor += '" width="32" height="32"/><span style=";position:absolute;top: 50%;-ms-transform: translateY(-50%);transform: translateY(-50%);vertical-align:top;">';
+        listAuthor += author.name + "</span></div><br>"; 
+      });
+      setListLikes(listAuthor);
+      
+      listAuthor = "";
+      dislikes.map((author) => {
+        listAuthor +='<div style="width:100px;position: relative;"><img style="border-radius: 50%;z-index: 1;" src="data:';
+        listAuthor += author.img.contentType + ";base64, ";
+        listAuthor += Buffer.from(author.img.data).toString('base64');
+        listAuthor += '" width="32" height="32"/><span style=";position:absolute;top: 50%;-ms-transform: translateY(-50%);transform: translateY(-50%);vertical-align:top;">';
+        listAuthor += author.name + "</span></div><br>"; 
+      });
+      setListDislikes(listAuthor);
+    }
+    getListLikes();
+  }, [likes]);
+
+   const commentSchema = Yup.object().shape({
     commentaire: Yup.string().required("Commentaire requis")
   });
 
@@ -213,14 +245,20 @@ const Thread = ({ thread }) => {
       </ThreadHeader>
 
       <ThreadContent>{content}</ThreadContent>
-
+      
       <Actions>
-        <ActionButton onClick={handleLike} like icon={<AiFillLike size={20} />}>
+      <Tooltip id={_id} html={listLikes} arrow maxWidth="10px"  />
+      <a data-tooltip-id={_id}>
+        <ActionButton onClick={handleLike} like icon={<AiFillLike size={20} />} >
           <Count like>{likes.length} J'aime</Count>
         </ActionButton>
+        </a>
+      <Tooltip id={_id + _id} html={listDislikes} arrow maxWidth="10px"  />
+      <a data-tooltip-id={_id + _id}>
         <ActionButton onClick={handleDislike} dislike  icon={<AiFillDislike size={20} />}>
           <Count dislike >{dislikes.length} J'aime pas</Count>
         </ActionButton>
+      </a>
       </Actions>
       <div>
         {comments.map((comment) => (
